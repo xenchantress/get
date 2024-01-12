@@ -1,88 +1,39 @@
-// import React from "react";
-// import "./Login.css";
-// import { useState } from "react";
+import React, { useContext, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "../api/auth";
+import UserContext from "../context/UserContext";
 
-// const Register = () => {
-//   const [username, setUsername] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [image, setImage] = useState(null);
+const Login = () => {
+  const [userInfo, setQuery] = useState("");
+  const [user, setUser] = useContext(UserContext);
 
-//   const handleRegister = () => {
-//     console.log(
-//       `Registering with username: ${username}, password: ${password}, and image: ${image}`
-//     );
-//   };
-
-//   const handleImageChange = (e) => {
-//     const selectedImage = e.target.files[0];
-
-//     setImage(selectedImage);
-//   };
-
-//   return (
-//     <div>
-//       <h2>Register</h2>
-//       <form>
-//         <label>
-//           Username:
-//           <input
-//             type="text"
-//             value={username}
-//             onChange={(e) => setUsername(e.target.value)}
-//           />
-//         </label>
-//         <br />
-//         <label>
-//           Password:
-//           <input
-//             type="password"
-//             value={password}
-//             onChange={(e) => setPassword(e.target.value)}
-//           />
-//         </label>
-//         <br />
-//         <label>
-//           Upload Image:
-//           <input type="file" accept="image/*" onChange={handleImageChange} />
-//         </label>
-//         <br />
-//         <button type="button" onClick={handleRegister}>
-//           Register
-//         </button>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default Register;
-
-// src/pages/Login.js
-import React, { useContext, useState } from 'react';
-import { useMutation } from 'react-query';
-//import axios from 'axios';
-import { login } from "'./api/auth";
-import UserContext from '../context/UserContext';
-
-const Login =() => {
-  const [userInfo, setUserInfo] = useState({});
-  //getting the context value
-  const [user, setUser] = useContext(UserContext)
-
-  const { mutate } = useMutation({ 
-    mutationKey:["login"],
+  const { mutate } = useMutation({
+    mutationKey: ["login"],
     mutationFn: () => login(userInfo),
-    onSuccess:() =>{
-      setUser ("IT'S ME MARIO");
+    onSuccess: () => {
+      setUser(true);
     },
-    //onError
   });
 
+  // const login = async(userInfo)=> {
+  //   const {data} = await instance.post("/auth/login", userInfo)
+  //   return data;
+  // }
+  // export {login};
   const handleChange = (e) => {
-    setUserInfo((prev) => ({...prev, [e.target.name]: e.target.value}));
+    setQuery((prev) => {
+      if (typeof prev !== "object" || prev === null) {
+        // If prev is not an object or is null, initialize it as an empty object
+        return { [e.target.name]: e.target.value };
+      }
+      return { ...prev, [e.target.name]: e.target.value };
+    });
   };
 
-  const handleFormSubmit =(e) => {
-    e.preventDefault();
+  const handleFormSubmit = (e) => {
+    e.preventDefault(); // Add this line to prevent the default form submission behavior
+
+    // Rest of your code
     mutate();
   };
 
@@ -132,7 +83,7 @@ const Login =() => {
             </button>
           </div>
         </form>
-        </div>
+      </div>
     </div>
   );
 };

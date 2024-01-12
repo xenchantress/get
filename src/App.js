@@ -12,8 +12,6 @@
 // //import Login from './components/Login';
 // //import Register from './components/Register';
 
-
-
 // const queryClient = new QueryClient();
 
 // const App = () => {
@@ -137,54 +135,55 @@
 //   );
 // }
 
-
 import "./App.css";
-import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Switch, Link, Redirect } from "react-router-dom";
-import Navbar from './components/Navbar';
+import {
+  Router,
+  Route,
+  Routes,
+  Switch,
+  Link,
+  Redirect,
+} from "react-router-dom";
+import Navbar from "./components/Navbar";
 //import Home from './pages/Home'; // Assuming you have a Home component
-import Transactions from './pages/Transactions'; // Assuming you have a Transactions component
-import Beneficiary from './pages/Beneficiary'; // Assuming you have a Beneficiary component
-import {Login} from "./Login";
-import Register from './pages/Register';
-import { Navigate } from "react-router-dom";
-import { clear } from "@testing-library/user-event/dist/clear";  
+//import Transactions from './pages/Transactions'; // Assuming you have a Transactions component
+//import Beneficiary from './pages/Beneficiary'; // Assuming you have a Beneficiary component
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+//import { Navigate } from "react-router-dom";
+//import { clear } from "@testing-library/user-event/dist/clear";
 import { getToken } from "./api/storage";
 import UserContext from "./context/UserContext";
 
-const queryClient = new QueryClient();
+//const queryClient = new QueryClient();
 
 const App = () => {
-  const [user, setUser] = useState(false); //null 
-useEffect(() =>{
+  const [user, setUser] = useState(false); //null
 
-  useEffect(()=>{
+  useEffect(() => {
     const token = getToken();
     if (token) {
       setUser(true);
     }
   }, []); // its empty to avoid infinite loop
 
-
-
-
-
   return (
-  <UserContext.Provider value={[user, setUser]}>
-    <div className="App font-mono">
-      <Navbar />
-      <div className="text-xl text-white">{`${user}`}</div>
-      <Routes>
-        <Route path="/" Component={Home} />
-        <Route path="/notes" Component={Notes} />
-        <Route path="/notes/noteId" Component={Note} />
-        <Route path="/login" Component={Login} />
-        <Route path="/register" Component={Register} />
-        <Route path="/users" Component={Users} />
-      </Routes>
-    </div>
+    <UserContext.Provider value={[user, setUser]}>
+      <div className="App font-mono">
+      <Navbar/>
+        <div className="">{`${user}`}</div>
+        <Routes>
+          <Route path="/Login" element={<Login/>} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </div>
     </UserContext.Provider>
   );
-}
+};
 export default App;
